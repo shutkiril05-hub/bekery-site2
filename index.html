@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Плюшка & Слива — пекарня-кондитерская</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb orb-a"></span>
+  <span class="orb orb-b"></span>
+  <span class="orb orb-c"></span>
+  <span class="orb orb-d"></span>
+  <span class="orb orb-e"></span>
+</div>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <div class="logo">
+      <button class="logo-icon-btn" onclick="showPage('home')" aria-label="На главную"><span class="mark"></span></button>
+      <button class="logo-text-btn" onclick="showPage('home')">Плюшка&nbsp;&amp;&nbsp;Слива</button>
+    </div>
+    <nav class="primary">
+      <a href="#" class="nav-link" data-page="catalog" onclick="showPage('catalog');return false;">Каталог</a>
+      <a href="#" class="nav-link" data-page="constructor" onclick="showPage('constructor');return false;">Конструктор</a>
+      <a href="#" class="nav-link" data-page="news" onclick="showPage('news');return false;">Новости</a>
+      <a href="#" class="nav-link" data-page="about" onclick="showPage('about');return false;">О нас</a>
+      <a href="#" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;">Контакты</a>
+    </nav>
+    <div class="header-cta" style="align-items:center;">
+      <button class="call-btn" id="callBtn" onclick="openCallPopover()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1.1z"/></svg>
+        <span>Позвонить</span>
+      </button>
+      <button class="fav-btn" onclick="openFavorites()" aria-label="Избранное" id="favBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.7-9.8-9.4C.6 7.6 2 4 5.6 3.2 8 2.7 10.3 3.9 12 6.2c1.7-2.3 4-3.5 6.4-3 3.6.8 5 4.4 3.4 7.9C19.5 15.8 12 20.5 12 20.5z"/></svg>
+        <span class="cart-badge hide" id="favBadge">0</span>
+      </button>
+      <button class="cart-btn" onclick="openCart()" aria-label="Корзина">
+        <svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20 8H6"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <span class="cart-badge hide" id="cartBadge">0</span>
+      </button>
+      <button class="btn btn-outline" onclick="showPage('constructor')">Конструктор</button>
+      <button class="btn btn-primary" id="headerOrderBtn" onclick="openCart()">Заказать торт</button>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="showPage('catalog');return false;">Каталог</a>
+    <a href="#" onclick="showPage('constructor');return false;">Конструктор</a>
+    <a href="#" onclick="showPage('news');return false;">Новости</a>
+    <a href="#" onclick="showPage('about');return false;">О нас</a>
+    <a href="#" onclick="closeMobileMenu();document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;">Контакты</a>
+    <a href="#" onclick="closeMobileMenu();openCallPopover();return false;">Позвонить</a>
+    <a href="#" onclick="closeMobileMenu();openFavorites();return false;">Избранное</a>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px;" onclick="closeMobileMenu();openCart();">Заказать торт</button>
+  </div>
+</header>
+
+<div id="page-home" class="page active">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-plain">Пекарня-кондитерская в Минске</div>
+      <h1>Торты, которые пекут по-домашнему</h1>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="showPage('constructor')">Открыть конструктор</button>
+        <button class="btn btn-outline" onclick="showPage('catalog')">Смотреть каталог</button>
+      </div>
+      <div class="hero-stats">
+        <div><b>120+</b><span>рецептов в меню</span></div>
+        <div><b>4–24ч</b><span>срок изготовления</span></div>
+        <div><b>0</b><span>консервантов</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1782864639148-91dcc2ad0a7b?w=900&h=900&fit=crop&auto=format&q=80" alt="Торт на заказ">
+      <div class="float-chip chip1"><span class="dot"></span>Наполеон — хит недели</div>
+      <div class="float-chip chip2"><span class="dot" style="background:var(--caramel)"></span>от 45 BYN / кг</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY SHOWCASE -->
+<section id="showcase" style="padding-top:20px;">
+  <div class="wrap">
+    <div class="showcase-grid" id="showcaseGrid"></div>
+  </div>
+</section>
+
+<!-- WHAT WE BAKE -->
+<section id="what-we-bake">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Что мы печём</h2>
+        <p>Четыре направления, вокруг которых строится всё меню — от повседневного к праздничному.</p>
+      </div>
+    </div>
+    <div class="bake-tiles" id="bakeTiles"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Как устроен заказ</h2>
+        <p>От выбора вкуса до вручения — четыре простых шага.</p>
+      </div>
+    </div>
+    <div class="steps-row">
+      <div class="step-card"><span class="step-num">01</span><h4>Выбираете</h4><p>Готовый торт из каталога или собираете свой в конструкторе — коржи, крем, начинка, декор.</p></div>
+      <div class="step-card"><span class="step-num">02</span><h4>Уточняем детали</h4><p>Подтверждаем размер, надпись и время подачи — при необходимости звоним для уточнений.</p></div>
+      <div class="step-card"><span class="step-num">03</span><h4>Готовим и собираем</h4><p>Один кондитер ведёт заказ от коржей до финального декора в день выдачи.</p></div>
+      <div class="step-card"><span class="step-num">04</span><h4>Доставляем</h4><p>Привозим в холодильной сумке к точному часу или подготовим к самовывозу.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PICKS -->
+<section id="featured">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Хиты продаж</h2>
+        <p>То, что чаще всего заказывают на этой неделе.</p>
+      </div>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+    <div style="text-align:center;margin-top:34px;">
+      <button class="btn btn-primary" onclick="showPage('catalog')">Смотреть весь каталог</button>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-home -->
+
+<!-- CATALOG -->
+<div id="page-catalog" class="page">
+<section id="catalog">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Каталог продукции</h2>
+        <p>От классических коржевых тортов до пасхальной выпечки — выберите категорию или начните с хитов продаж.</p>
+      </div>
+    </div>
+    <div class="cat-menu">
+      <button class="cat-menu-btn" id="catMenuBtn" aria-haspopup="listbox" aria-expanded="false">
+        <span id="catMenuLabel">Все хиты</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" id="catMenuChevron"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="cat-dropdown" id="catDropdown" role="listbox"></div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- PRODUCT DETAIL -->
+<section id="product-detail">
+  <div class="wrap">
+    <div class="pd-stage" id="pdStage">
+      <img id="pdPhoto" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;">
+      <canvas id="particleCanvas"></canvas>
+      <button class="pd-close" onclick="closeProduct()">✕</button>
+      <div class="pd-inner">
+        <div>
+          <h3 id="pdName">Медовик классический</h3>
+          <p class="desc" id="pdDesc">Семь тонких медовых коржей и сметанный крем со сливками. Собирается вручную и настаивается минимум 8 часов перед подачей.</p>
+          <div class="kbju" id="pdKbju"></div>
+          <div class="size-row" id="pdSizes"></div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="qty-stepper" style="background:rgba(255,255,255,0.12);">
+              <button onclick="pdChangeQty(-1)" style="background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.2);color:#fff;">−</button>
+              <span id="pdQty" style="color:#fff;">1</span>
+              <button onclick="pdChangeQty(1)" style="background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.2);color:#fff;">+</button>
+            </div>
+            <button class="btn btn-caramel" onclick="addProductToCart()">Добавить в корзину</button>
+          </div>
+        </div>
+        <div class="pd-card">
+          <div class="row"><span>Состав</span><span id="pdComp" style="text-align:right;max-width:60%;">мука, мёд, сметана, сливки 33%, яйцо, сахар</span></div>
+          <div class="row"><span>Вес выбранного размера</span><span id="pdWeight">1,4 кг</span></div>
+          <div class="row"><span>Готовность</span><span id="pdReady">от 6 часов</span></div>
+          <div class="row"><span>Стоимость</span><span id="pdPrice" class="price">63 BYN</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-catalog -->
+
+<!-- CONSTRUCTOR -->
+<div id="page-constructor" class="page">
+<section id="constructor">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Соберите торт сами</h2>
+        <p>Выберите основу, начинку, крем и декор — увидите вес и стоимость в реальном времени, как в конструкторе пиццы.</p>
+      </div>
+    </div>
+    <div class="constructor">
+      <div class="steps-nav" id="stepsNav"></div>
+      <div class="cons-grid">
+        <div>
+          <div class="step-block show" data-step="0">
+            <div class="opt-group" id="step0"></div>
+          </div>
+          <div class="step-block" data-step="1"><div class="opt-group" id="step1"></div></div>
+          <div class="step-block" data-step="2"><div class="opt-group" id="step2"></div></div>
+          <div class="step-block" data-step="3"><div class="opt-group" id="step3"></div></div>
+          <div class="step-block" data-step="4"><div class="opt-group" id="step4"></div></div>
+          <div class="cons-nav-btns">
+            <button class="btn btn-outline" id="prevStepBtn" onclick="changeStep(-1)">Назад</button>
+            <button class="btn btn-primary" id="nextStepBtn" onclick="changeStep(1)">Далее</button>
+          </div>
+        </div>
+        <div class="cons-summary">
+          <h4>Ваш торт</h4>
+          <div id="sumRows"></div>
+          <div class="sum-total"><span>Итого</span><span class="amt" id="sumTotal">0 BYN</span></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px;" onclick="addConstructorToCart()">Добавить в корзину</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-constructor -->
+
+<!-- NEWS -->
+<div id="page-news" class="page">
+<section id="news">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Новости и сезонные предложения</h2>
+        <p>Что нового на кухне: акции, новые вкусы начинок и предпраздничные наборы.</p>
+      </div>
+    </div>
+    <div class="news-window">
+      <div class="news-window-head">
+        <div class="nw-title"><span class="nw-dot"></span>Лента новостей</div>
+      </div>
+      <div class="news-grid-feed" id="newsGrid"></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-news -->
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-visual"><img src="https://images.unsplash.com/photo-1617612014110-279dfce1211b?w=700&h=720&fit=crop&auto=format&q=80" alt="Домашняя выпечка" loading="lazy"></div>
+    <div>
+      <div class="eyebrow-plain">О пекарне</div>
+      <h2 style="font-size:32px;margin:0 0 14px;">Начали с домашней кухни на восемь тортов в неделю</h2>
+      <p style="color:var(--choc-soft);line-height:1.65;font-size:15.5px;">Сегодня мы печём для свадеб, детских праздников и корпоративных событий — но принцип не изменился: коржи из муки без улучшителей, крем на натуральных сливках и сборка вручную в день заказа.</p>
+      <ul class="feature-list">
+        <li><span class="ic">✓</span><div><b>Только свежие компоненты</b><span>Закупка продуктов происходит ежедневно, ничего не хранится дольше суток.</span></div></li>
+        <li><span class="ic">✓</span><div><b>Ручная сборка</b><span>Каждый торт собирает один кондитер от начала до декора.</span></div></li>
+        <li><span class="ic">✓</span><div><b>Точный срок подачи</b><span>Вы выбираете час доставки — привозим в холодильной сумке.</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section-head" style="margin-top:56px;">
+      <div>
+        <h2>Из нашей кухни</h2>
+        <p>Немного атмосферы: как выглядит то, что мы печём и собираем каждый день.</p>
+      </div>
+    </div>
+    <div class="about-gallery" id="aboutGallery"></div>
+
+    <div class="about-info-grid">
+      <div class="about-info-card">
+        <h3>Адрес</h3>
+        <p>ул. Кондитерская, 12, Минск</p>
+        <p>Ежедневно 9:00–21:00</p>
+      </div>
+      <div class="about-info-card">
+        <h3>Контакты</h3>
+        <p>+375 29 000-00-00</p>
+        <p>hello@plushka-sliva.by</p>
+      </div>
+      <div class="about-info-card">
+        <h3>Мы в соцсетях</h3>
+        <div class="social-row" id="socialRowAbout"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-about -->
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h5 style="font-family:'Fraunces',serif;font-size:20px;">Плюшка &amp; Слива</h5>
+        <p>Пекарня-кондитерская полного цикла: от повседневной выпечки до свадебных тортов.</p>
+        <div class="social-row" id="socialRowFooter" style="margin-bottom:16px;"></div>
+        <div class="map-box"></div>
+      </div>
+      <div>
+        <h5>Каталог</h5>
+        <a href="#" style="display:block;" onclick="goToCategory('classic');return false;">Классические торты</a>
+        <a href="#" style="display:block;" onclick="goToCategory('holiday');return false;">Праздничные торты</a>
+        <a href="#" style="display:block;" onclick="goToCategory('wedding');return false;">Свадебные торты</a>
+        <a href="#" style="display:block;" onclick="goToCategory('pastry');return false;">Пирожные</a>
+      </div>
+      <div>
+        <h5>Информация</h5>
+        <a href="#" style="display:block;" onclick="showPage('constructor');return false;">Конструктор тортов</a>
+        <a href="#" style="display:block;">Условия предоплаты</a>
+        <a href="#" style="display:block;">Доставка</a>
+        <a href="#" style="display:block;">Начинки — картотека вкусов</a>
+      </div>
+      <div>
+        <h5>Контакты</h5>
+        <p>+375 29 000-00-00<br>ул. Кондитерская, 12, Минск<br>ежедневно 9:00–21:00</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Плюшка &amp; Слива. Все права защищены.</span>
+      <span>Оплата: WebPay · bePaid · ЕРИП · Visa · Mastercard · БЕЛКАРТ</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="modal-overlay" id="cartModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCart()">✕</button>
+    <h3>Корзина</h3>
+    <p class="sub">Можно добавить сколько угодно позиций и оформить заказ одним чеком.</p>
+    <div id="cartItems"></div>
+    <div id="cartFooter"></div>
+  </div>
+</div>
+
+<!-- FAVORITES DRAWER -->
+<div class="modal-overlay" id="favModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeFavorites()">✕</button>
+    <h3>Избранное</h3>
+    <p class="sub">Товары, которые вы отметили сердечком, сохраняются здесь.</p>
+    <div id="favItems"></div>
+  </div>
+</div>
+
+<!-- CONTACTS MODAL -->
+<div class="modal-overlay" id="callModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCallPopover()">✕</button>
+    <h3>Контакты</h3>
+    <p class="sub">Свяжитесь с нами удобным способом — мы всегда на связи.</p>
+    <div class="cart-row">
+      <div style="flex:1;">
+        <div class="ci-name">Телефон</div>
+        <div class="ci-price"><a class="cd-number" href="tel:+375290000000">+375 29 000-00-00</a></div>
+      </div>
+    </div>
+    <div class="cart-row">
+      <div style="flex:1;">
+        <div class="ci-name">Второй номер</div>
+        <div class="ci-price"><a class="cd-number" href="tel:+375290000000">8 (029) 000-00-00</a></div>
+      </div>
+    </div>
+    <div class="cart-row">
+      <div style="flex:1;">
+        <div class="ci-name">Адрес</div>
+        <div class="ci-price">ул. Кондитерская, 12, Минск</div>
+      </div>
+    </div>
+    <div class="cart-row" style="border-bottom:none;">
+      <div style="flex:1;">
+        <div class="ci-name">Время работы</div>
+        <div class="ci-price">ежедневно 9:00–21:00</div>
+      </div>
+    </div>
+    <div class="cd-socials" id="callSocials" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);"></div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCheckout()">✕</button>
+    <h3>Оформление заказа</h3>
+    <p class="sub">Заказ заранее с предоплатой — остальное оплачивается при получении.</p>
+    <div class="field">
+      <label>Ваш заказ</label>
+      <div id="checkoutSummary" style="background:var(--cream);border-radius:14px;padding:6px 14px;"></div>
+    </div>
+    <div class="field">
+      <label>Имя</label>
+      <input type="text" placeholder="Ваше имя">
+    </div>
+    <div class="field">
+      <label>Телефон</label>
+      <input type="text" placeholder="+375 29 000-00-00">
+    </div>
+    <div class="field">
+      <label>Дата и время получения</label>
+      <input type="datetime-local">
+    </div>
+    <div class="field">
+      <label>Способ оплаты предоплаты</label>
+      <div class="pay-methods">
+        <div class="pay-opt sel" data-pay="webpay" onclick="selectPay(this)">WebPay</div>
+        <div class="pay-opt" data-pay="bepaid" onclick="selectPay(this)">bePaid</div>
+        <div class="pay-opt" data-pay="erip" onclick="selectPay(this)">ЕРИП</div>
+        <div class="pay-opt" data-pay="card" onclick="selectPay(this)">Visa / MC / БЕЛКАРТ</div>
+      </div>
+    </div>
+    <div class="prepay-box">
+      <div class="row"><span>Стоимость заказа</span><span id="mFull">0 BYN</span></div>
+      <div class="row"><span id="mPrepayLabel">Предоплата (50%)</span><span id="mPrepay">0 BYN</span></div>
+      <div class="row total"><span>К оплате сейчас</span><span id="mNow">0 BYN</span></div>
+      <p class="prepay-note">Для повседневной выпечки и пирожных действует предоплата 50%. Для праздничных и свадебных тортов дороже 150 BYN — предоплата снижена до 25%, остаток вносится при получении.</p>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitOrder()">Оплатить предоплату</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
