@@ -1,3 +1,27 @@
+/* ============ SMOOTH SCROLL (custom, eased, distance-aware) ============ */
+/* Native scrollIntoView/scrollTo("smooth") run for a fixed short duration no matter
+   how far the target is, so on a long page it looks like a fast, abrupt whoosh rather
+   than a gentle glide. This scales duration with distance and eases in/out. */
+function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+function smoothScrollTo(targetY, duration){
+  const startY = window.scrollY;
+  const diff = targetY - startY;
+  if(Math.abs(diff) < 2) return;
+  duration = duration || Math.min(1100, Math.max(500, Math.abs(diff)*0.45));
+  const startTime = performance.now();
+  function step(now){
+    const t = Math.min(1, (now - startTime) / duration);
+    window.scrollTo(0, startY + diff * easeInOutCubic(t));
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function scrollToEl(el, offset){
+  if(!el) return;
+  const targetY = el.getBoundingClientRect().top + window.scrollY - (offset||0);
+  smoothScrollTo(Math.max(0, targetY));
+}
+
 /* ============ DATA ============ */
 const categories = [
   {id:'classic', name:'Классические торты'},
@@ -19,6 +43,16 @@ const IMG = {
   macarons: 'https://images.unsplash.com/photo-1570476922354-81227cdbb76c',
   cupcakes: 'https://images.unsplash.com/photo-1611692276815-cd6efa0b2dac',
   cherryPie: 'https://images.unsplash.com/photo-1617612014110-279dfce1211b',
+  cheesecake: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad',
+  carrotCake: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729',
+  tiramisu: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9',
+  croissant: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a',
+  babka: 'https://images.unsplash.com/photo-1509440159596-0249088772ff',
+  cinnamonRolls: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812',
+  cookieBox: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e',
+  fruitTart: 'https://images.unsplash.com/photo-1519915028121-7d3463d5b1ff',
+  breadLoaf: 'https://images.unsplash.com/photo-1549931319-a545749fcd16',
+  eclair: 'https://images.unsplash.com/photo-1621303837224-d5b3e7edccb0',
 };
 function img(url,w,h){ return `${url}?w=${w}&h=${h}&fit=crop&auto=format&q=80`; }
 const CAT_IMG = {
@@ -54,6 +88,23 @@ const products = [
   {id:14,cat:'karavay',name:'Каравай свадебный',desc:'Дрожжевое тесто, узорный декор',price:75,badge:null,weight:'2,0 кг',ready:'от 24 часов',comp:'мука, дрожжи, яйцо, соль',kcal:'260',prot:'8,0',fat:'4',carb:'50',img:IMG.weddingCake},
   {id:15,cat:'easter',name:'Кулич классический',desc:'Цукаты, ванильная глазурь',price:18,badge:'Сезон',weight:'600 г',ready:'от 6 часов',comp:'мука, изюм, цукаты, ваниль',kcal:'310',prot:'6,0',fat:'9',carb:'52',img:IMG.pastryCase},
   {id:16,cat:'easter',name:'Пасхальный набор',desc:'Кулич + декорированные яйца из шоколада',price:35,badge:'Сезон',weight:'900 г',ready:'от 10 часов',comp:'мука, шоколад, цукаты',kcal:'330',prot:'5,5',fat:'14',carb:'46',img:IMG.macarons},
+  {id:17,cat:'classic',name:'Чизкейк Нью-Йорк',desc:'Сливочный сыр, песочная основа',price:68,badge:'Хит',weight:'1,1 кг',ready:'от 8 часов',comp:'сливочный сыр, яйцо, печенье, масло',kcal:'365',prot:'6,0',fat:'27',carb:'26',img:IMG.cheesecake},
+  {id:18,cat:'classic',name:'Морковный торт',desc:'Морковь, грецкий орех, крем-чиз',price:66,badge:null,weight:'1,3 кг',ready:'от 6 часов',comp:'морковь, орех, мука, крем-чиз',kcal:'345',prot:'5,0',fat:'19',carb:'40',img:IMG.carrotCake},
+  {id:19,cat:'classic',name:'Тирамису',desc:'Маскарпоне, кофе, какао',price:70,badge:'Хит',weight:'1,0 кг',ready:'от 6 часов',comp:'маскарпоне, савоярди, кофе, какао',kcal:'320',prot:'5,5',fat:'22',carb:'28',img:IMG.tiramisu},
+  {id:20,cat:'holiday',name:'Торт «Птичье молоко»',desc:'Суфле на агаре, шоколадная глазурь',price:60,badge:null,weight:'1,2 кг',ready:'от 8 часов',comp:'мука, агар, масло, шоколад',kcal:'335',prot:'4,5',fat:'17',carb:'44',img:IMG.chocSlice},
+  {id:21,cat:'wedding',name:'Свадебный двухъярусный',desc:'Нежный крем, ягодный декор',price:280,badge:'От 2 кг',weight:'2–5 кг',ready:'от 36 часов',comp:'по выбору начинки и крема',kcal:'—',prot:'—',fat:'—',carb:'—',img:IMG.weddingCake},
+  {id:22,cat:'kids',name:'«Единорог» мини',desc:'Кекс-торт для маленького праздника',price:52,badge:null,weight:'900 г',ready:'от 12 часов',comp:'мука, ваниль, мастика, крем-чиз',kcal:'350',prot:'4,2',fat:'17',carb:'41',img:IMG.cupcakes},
+  {id:23,cat:'kids',name:'Торт «Машинка»',desc:'Ванильный бисквит, яркий декор',price:98,badge:'Детям',weight:'1,6 кг',ready:'от 24 часов',comp:'мука, ваниль, мастика, крем',kcal:'352',prot:'4,4',fat:'18',carb:'42',img:IMG.cupcakes},
+  {id:24,cat:'pastry',name:'Круассаны (набор 4 шт)',desc:'Слоёное масляное тесто',price:18,badge:null,weight:'320 г',ready:'от 3 часов',comp:'мука, масло, дрожжи',kcal:'406',prot:'7,0',fat:'21',carb:'45',img:IMG.croissant},
+  {id:25,cat:'pastry',name:'Фруктовые тарты (набор 4 шт)',desc:'Заварной крем, сезонные ягоды',price:36,badge:'Хит',weight:'480 г',ready:'от 4 часов',comp:'песочное тесто, крем, ягоды',kcal:'290',prot:'3,8',fat:'15',carb:'35',img:IMG.fruitTart},
+  {id:26,cat:'pastry',name:'Эклеры шоколадные (набор 6 шт)',desc:'Заварной крем, шоколадная глазурь',price:26,badge:null,weight:'420 г',ready:'от 3 часов',comp:'мука, яйцо, масло, шоколад',kcal:'305',prot:'5,2',fat:'18',carb:'31',img:IMG.eclair},
+  {id:27,cat:'event',name:'Печенье на заказ (набор 12 шт)',desc:'Имбирное или сахарное, роспись глазурью',price:22,badge:null,weight:'360 г',ready:'от 24 часов',comp:'мука, масло, сахар, глазурь',kcal:'420',prot:'4,5',fat:'16',carb:'62',img:IMG.cookieBox},
+  {id:28,cat:'event',name:'Капкейки праздничные (набор 6 шт)',desc:'Крем-чиз, декор под тему',price:32,badge:'Праздник',weight:'420 г',ready:'от 6 часов',comp:'мука, масло, крем-чиз',kcal:'325',prot:'4,0',fat:'17',carb:'39',img:IMG.cupcakes},
+  {id:29,cat:'pies',name:'Пирог с яблоком и корицей',desc:'Открытый, песочное тесто',price:28,badge:null,weight:'850 г',ready:'от 4 часов',comp:'мука, яблоко, корица, масло',kcal:'255',prot:'3,8',fat:'10',carb:'37',img:IMG.cherryPie},
+  {id:30,cat:'pies',name:'Синнабоны (набор 4 шт)',desc:'Дрожжевое тесто, корица, крем-чиз глазурь',price:22,badge:'Хит',weight:'480 г',ready:'от 5 часов',comp:'мука, корица, масло, крем-чиз',kcal:'380',prot:'6,0',fat:'16',carb:'52',img:IMG.cinnamonRolls},
+  {id:31,cat:'karavay',name:'Каравай на выписку',desc:'Дрожжевое тесто, узорный декор',price:65,badge:null,weight:'1,5 кг',ready:'от 24 часов',comp:'мука, дрожжи, яйцо, соль',kcal:'258',prot:'8,0',fat:'4',carb:'49',img:IMG.babka},
+  {id:32,cat:'karavay',name:'Хлеб домашний ремесленный',desc:'На закваске, хрустящая корка',price:14,badge:null,weight:'700 г',ready:'от 24 часов',comp:'мука, закваска, соль, вода',kcal:'240',prot:'8,5',fat:'1,5',carb:'48',img:IMG.breadLoaf},
+  {id:33,cat:'easter',name:'Кулич с шафраном',desc:'Изюм, цукаты, ванильная глазурь',price:22,badge:'Сезон',weight:'650 г',ready:'от 8 часов',comp:'мука, шафран, изюм, цукаты',kcal:'318',prot:'6,2',fat:'9,5',carb:'53',img:IMG.pastryCase},
 ];
 
 const news = [
@@ -106,12 +157,16 @@ menuToggle.addEventListener('click', ()=>{
 mobileMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMobileMenu));
 
 /* ============ PAGE NAVIGATION ============ */
+function goToContacts(){
+  scrollToEl(document.getElementById('contact'), 90);
+}
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target = document.getElementById('page-'+id);
   if(target) target.classList.add('active');
   document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active', a.dataset.page===id));
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.body.classList.toggle('page-home', id==='home');
+  smoothScrollTo(0);
   closeMobileMenu();
 }
 function goToCategory(catId){
@@ -152,6 +207,8 @@ const bakeTilesData = [
   {cat:'wedding', img:IMG.weddingCake, name:'Свадебные торты', desc:'Многоярусные композиции под цвет и стиль торжества'},
   {cat:'pastry', img:IMG.macarons, name:'Пирожные и десерты', desc:'Капкейки, макаронс и мини-десерты на любой праздник'},
   {cat:'pies', img:IMG.cherryPie, name:'Пироги', desc:'Открытые и закрытые пироги с сезонными начинками'},
+  {cat:'kids', img:IMG.cupcakes, name:'Детские торты', desc:'Яркий декор и любимые персонажи к детскому празднику'},
+  {cat:'easter', img:IMG.pastryCase, name:'Пасхальная продукция', desc:'Куличи и праздничные наборы к весеннему сезону'},
 ];
 function renderBakeTiles(){
   const el = document.getElementById('bakeTiles');
@@ -223,9 +280,9 @@ const productGrid = document.getElementById('productGrid');
 let activeCat = 'all';
 
 function renderPills(){
-  const all = [{id:'all',name:'Все хиты'}, ...categories];
+  const all = [{id:'all',name:'Все товары'}, ...categories];
   catDropdown.innerHTML = all.map(c=>`<button class="${activeCat===c.id?'active':''}" data-id="${c.id}" role="option">${c.name}</button>`).join('');
-  catMenuLabel.textContent = all.find(c=>c.id===activeCat)?.name || 'Все хиты';
+  catMenuLabel.textContent = all.find(c=>c.id===activeCat)?.name || 'Все товары';
   catDropdown.querySelectorAll('button').forEach(p=>p.addEventListener('click',()=>{
     activeCat=p.dataset.id;
     renderPills();
@@ -252,7 +309,7 @@ function openCallPopover(){ callModal.classList.add('open'); }
 function closeCallPopover(){ callModal.classList.remove('open'); }
 callModal.addEventListener('click', e=>{ if(e.target===callModal) closeCallPopover(); });
 function renderProducts(){
-  const list = activeCat==='all' ? products.filter(p=>p.badge) : products.filter(p=>p.cat===activeCat);
+  const list = activeCat==='all' ? products : products.filter(p=>p.cat===activeCat);
   productGrid.innerHTML = list.map(p=>`
     <div class="p-card" data-id="${p.id}">
       <div class="p-thumb">
@@ -314,32 +371,69 @@ document.getElementById('newsGrid').innerHTML = news.map((n,i)=>`
 /* ============ PRODUCT DETAIL + CANVAS PARTICLES ============ */
 const pdSection = document.getElementById('product-detail');
 let currentProduct = null;
+let currentPrice = 0;
+
+/* Parses a weight string like "1,3 кг", "900 г", "80 г / шт" into a number + unit.
+   Returns null for ranges (e.g. "3–8 кг") that can't be scaled by a simple factor. */
+function parseWeight(w){
+  if(!w || /[–-]/.test(w)) return null;
+  const m = w.match(/^([\d.,]+)\s*(кг|г)(.*)$/);
+  if(!m) return null;
+  return { value: parseFloat(m[1].replace(',', '.')), unit: m[2], suffix: m[3] || '' };
+}
+function formatWeight(value, unit, suffix){
+  const label = unit === 'кг' ? value.toFixed(1).replace('.', ',') + ' кг' : Math.round(value) + ' г';
+  return label + suffix;
+}
+function buildSizeOptions(product){
+  const parsed = parseWeight(product.weight);
+  if(!parsed) return null;
+  const factors = [0.67, 1, 1.25, 1.67];
+  return factors.map(f=>({
+    weightLabel: formatWeight(parsed.value*f, parsed.unit, parsed.suffix),
+    price: Math.max(1, Math.round(product.price*f))
+  }));
+}
+function applyPdSize(size){
+  currentPrice = size.price;
+  document.getElementById('pdWeight').textContent = size.weightLabel;
+  document.getElementById('pdPrice').textContent = size.price + ' BYN';
+}
 
 function openProduct(id){
   showPage('catalog');
   currentProduct = products.find(p=>p.id===id);
   pdQty = 1;
   document.getElementById('pdQty').textContent = pdQty;
-  document.getElementById('pdPhoto').src = img(currentProduct.img,1000,800);
+  document.getElementById('pdStage').style.background = thumbGradient(currentProduct.id);
   document.getElementById('pdName').textContent = currentProduct.name;
   document.getElementById('pdDesc').textContent = currentProduct.desc + '. Готовим и собираем в день заказа.';
   document.getElementById('pdComp').textContent = currentProduct.comp;
-  document.getElementById('pdWeight').textContent = currentProduct.weight;
   document.getElementById('pdReady').textContent = currentProduct.ready;
-  document.getElementById('pdPrice').textContent = currentProduct.price + ' BYN';
   document.getElementById('pdKbju').innerHTML = `
     <div><b>${currentProduct.kcal}</b>ккал/100г</div>
     <div><b>${currentProduct.prot}</b>белки</div>
     <div><b>${currentProduct.fat}</b>жиры</div>
     <div><b>${currentProduct.carb}</b>углеводы</div>`;
-  const sizes = ['0,8 кг','1,2 кг','1,5 кг','2,0 кг'];
-  document.getElementById('pdSizes').innerHTML = sizes.map((s,i)=>`<button class="size-opt ${i===1?'active':''}">${s}</button>`).join('');
-  document.querySelectorAll('#pdSizes .size-opt').forEach(b=>b.addEventListener('click',()=>{
-    document.querySelectorAll('#pdSizes .size-opt').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-  }));
+  const sizesEl = document.getElementById('pdSizes');
+  const sizeOptions = buildSizeOptions(currentProduct);
+  if(sizeOptions){
+    sizesEl.style.display = '';
+    sizesEl.innerHTML = sizeOptions.map((s,i)=>`<button class="size-opt ${i===1?'active':''}" data-i="${i}">${s.weightLabel}</button>`).join('');
+    sizesEl.querySelectorAll('.size-opt').forEach((b,i)=>b.addEventListener('click',()=>{
+      sizesEl.querySelectorAll('.size-opt').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      applyPdSize(sizeOptions[i]);
+    }));
+    applyPdSize(sizeOptions[1]);
+  } else {
+    sizesEl.style.display = 'none';
+    currentPrice = currentProduct.price;
+    document.getElementById('pdWeight').textContent = currentProduct.weight;
+    document.getElementById('pdPrice').textContent = currentProduct.price + ' BYN';
+  }
   pdSection.classList.add('open');
-  pdSection.scrollIntoView({behavior:'smooth',block:'start'});
+  scrollToEl(pdSection, 90);
   startParticles();
 }
 function closeProduct(){
@@ -352,8 +446,9 @@ function pdChangeQty(delta){
   document.getElementById('pdQty').textContent = pdQty;
 }
 function addProductToCart(){
-  addToCart('p'+currentProduct.id, currentProduct.name, currentProduct.price, pdQty);
+  addToCart('p'+currentProduct.id, currentProduct.name, currentPrice, pdQty);
   pulseCartButton();
+  openCart();
 }
 
 /* Canvas particle field reacting to mouse */
