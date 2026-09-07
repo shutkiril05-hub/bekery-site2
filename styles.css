@@ -524,3 +524,4 @@
   }
   @media(max-width:640px){
     .about-gallery{grid-template-columns:repeat(2,1fr);gap:10px;}
+  }
